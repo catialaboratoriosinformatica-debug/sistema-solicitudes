@@ -34,3 +34,8 @@ RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 EXPOSE 80
 
 CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=80
+
+# Ejecutar comandos de optimización y assets de Filament
+RUN php artisan filament:assets
+RUN php artisan storage:link
+RUN php artisan optimize:clear
