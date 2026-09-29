@@ -48,19 +48,12 @@ class UserResource extends Resource
     {
         return $schema
             ->components([
-                TextEntry::make('name_surnames')
-                    ->label('Nombre y Apellido')
-                    ->getStateUsing(fn (User $record): string => $record->name . ' ' . $record->surnames)
-                    ->searchable(['name', 'surnames']),
-                TextEntry::make('cargo')
-                    ->label('Cargo')
-                    ->searchable(),
+                TextEntry::make('name'),
                 TextEntry::make('email')
-                    ->label('Correo Electronico')
-                    ->searchable(),
-                //TextEntry::make('email_verified_at')
-                //    ->dateTime()
-                //    ->placeholder('-'),
+                    ->label('Email address'),
+                TextEntry::make('email_verified_at')
+                    ->dateTime()
+                    ->placeholder('-'),
                 TextEntry::make('created_at')
                     ->dateTime()
                     ->placeholder('-'),
@@ -75,14 +68,19 @@ class UserResource extends Resource
         return $table
             ->recordTitleAttribute('Usuarios')
             ->columns([
-                TextColumn::make('name')
+                TextColumn::make('name_surnames')
+                    ->label('Nombre y Apellido')
+                    ->getStateUsing(fn (User $record): string => $record->name . ' ' . $record->surnames)
+                    ->searchable(['name', 'surnames']),
+                TextColumn::make('cargo')
+                    ->label('Cargo')
                     ->searchable(),
                 TextColumn::make('email')
                     ->label('Email address')
                     ->searchable(),
-                TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable(),
+                //TextColumn::make('email_verified_at')
+                //    ->dateTime()
+                //    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
