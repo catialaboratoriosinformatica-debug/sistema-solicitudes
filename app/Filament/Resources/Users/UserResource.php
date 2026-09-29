@@ -18,29 +18,54 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-user-plus';
 
     protected static ?string $recordTitleAttribute = 'Usuarios';
+
+    protected static ?string $navigationLabel = 'Usuarios';
+
+    protected static string | UnitEnum | null $navigationGroup = 'Personal';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
-                TextInput::make('name')
-                    ->required(),
-                TextInput::make('email')
-                    ->label('Email address')
-                    ->email()
-                    ->required(),
-                DateTimePicker::make('email_verified_at'),
-                TextInput::make('password')
-                    ->password()
-                    ->required(),
+                Section::make('Información del Usuario')
+                ->schema([
+                    TextInput::make('name')
+                        ->label('Nombre')
+                        ->required()
+                        ->maxLength(255),
+                    TextInput::make('surnames')
+                        ->label('Apellido')
+                        ->required()
+                        ->maxLength(255),
+                    TextInput::make('cargo')
+                        ->label('Cargo')
+                        ->required()
+                        ->maxLength(255),
+                ])->columns(1),
+                Section::make('Cuenta del Usuario')
+                ->schema([
+                    TextInput::make('email')
+                        ->label('Correo Electrónico')
+                        ->email()
+                        ->required()
+                        ->maxLength(255),
+                    TextInput::make('password')
+                        ->password()
+                        ->dehydrateStateUsing(fn ($state) => Hash::make($state)) // ENCRIPTA LA CLAVE
+                        ->dehydrated(fn ($state) => filled($state)) // No sobrescribe si queda vacío al editar
+                        ->required(fn (string $context): bool => $context === 'create'),
+                 ])->columns(1)
             ]);
     }
 
@@ -76,7 +101,7 @@ class UserResource extends Resource
                     ->label('Cargo')
                     ->searchable(),
                 TextColumn::make('email')
-                    ->label('Email address')
+                    ->label('Correo Electronico')
                     ->searchable(),
                 //TextColumn::make('email_verified_at')
                 //    ->dateTime()
