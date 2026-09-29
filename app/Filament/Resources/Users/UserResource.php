@@ -19,6 +19,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Schemas\Components\Section;
 use Filament\Tables\Table;
+use Filament\Actions\ActionGroup;
 use UnitEnum;
 
 class UserResource extends Resource
@@ -76,11 +77,14 @@ class UserResource extends Resource
     {
         return $schema
             ->components([
-                TextEntry::make('name'),
-                TextEntry::make('surnames'),
-                TextEntry::make('cargo'),
+                TextEntry::make('name')
+                ->label('Nombre'),
+                TextEntry::make('surnames')
+                ->label('Apellido'),
+                TextEntry::make('cargo')
+                ->label('Cargo'),
                 TextEntry::make('email')
-                ->label('Email address'),
+                ->label('Correo Electronico'),
                 //TextEntry::make('email_verified_at')
                 //    ->dateTime()
                 //    ->placeholder('-'),
@@ -111,9 +115,14 @@ class UserResource extends Resource
                 //
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
+            ActionGroup::make([
+                ViewAction::make()
+                ->tooltip('Ver Datos del Usuario'),
+                EditAction::make()
+                ->tooltip('Editar Datos del Usuario'),
+                DeleteAction::make()
+                ->tooltip('Eliminar Usuario'),
+            ]),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
