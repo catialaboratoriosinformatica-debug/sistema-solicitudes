@@ -60,12 +60,14 @@ class UserResource extends Resource
                         ->label('Correo Electrónico')
                         ->email()
                         ->required()
-                        ->maxLength(255),
+                        ->maxLength(255)
+                        ->autocomplete(false),
                     TextInput::make('password')
                         ->password()
                         ->dehydrateStateUsing(fn ($state) => Hash::make($state)) // ENCRIPTA LA CLAVE
                         ->dehydrated(fn ($state) => filled($state)) // No sobrescribe si queda vacío al editar
-                        ->required(fn (string $context): bool => $context === 'create'),
+                        ->required(fn (string $context): bool => $context === 'create')
+                        ->autocomplete('new-password'),
                  ])->columns(1)
             ]);
     }
