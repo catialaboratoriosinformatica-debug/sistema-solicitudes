@@ -18,12 +18,13 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::firstOrCreate(
-            ['email' => 'catialaboratoriosinformatica@iujo.edu.ve'],
-            [
-                'name' => 'RossRon',
-                'password' => Hash::make('30260145'),
-            ]
-        );
+        DB::table('users')->insert([
+            'name' => 'Ross',
+            'surnames' => 'Ron',
+            'cargo' => 'Jefe de Laboratorio',
+            'email' => 'catialaboratoriosinformatica@iujo.edu.ve',
+            'password' => Hash::make('30260145')
+        ]);
+
     }
 }
