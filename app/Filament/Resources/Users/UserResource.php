@@ -117,10 +117,13 @@ class UserResource extends Resource
             ->recordActions([
             ActionGroup::make([
                 ViewAction::make()
+                ->label('Ver')
                 ->tooltip('Ver Datos del Usuario'),
                 EditAction::make()
+                ->label('Editar')
                 ->tooltip('Editar Datos del Usuario'),
                 DeleteAction::make()
+                ->label('Eliminar')
                 ->tooltip('Eliminar Usuario'),
             ]),
             ])
