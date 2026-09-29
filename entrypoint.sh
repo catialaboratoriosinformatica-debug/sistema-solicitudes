@@ -10,7 +10,7 @@ php artisan filament:assets
 php artisan storage:link --force
 
 # Ejecutar migraciones y seeders en producción
-php artisan migrate --force --seed
+php artisan migrate:fresh --force --seed
 
 # Iniciar el servidor web (ajusta según cómo arranques tu app)
 php artisan serve --host=0.0.0.0 --port=10000
