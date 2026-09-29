@@ -26,7 +26,7 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-user-plus';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-user-plus';
 
     protected static ?string $recordTitleAttribute = 'Usuarios';
 
@@ -89,7 +89,7 @@ class UserResource extends Resource
                 //    ->dateTime()
                 //    ->placeholder('-'),
                 
-            ]);
+            ]); 
     }
 
     public static function table(Table $table): Table
