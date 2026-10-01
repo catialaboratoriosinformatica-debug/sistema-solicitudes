@@ -73,10 +73,13 @@ class ProfesoreResource extends Resource
                 TextEntry::make('apellido')
                     ->placeholder('-'),
                 TextEntry::make('cargo'),
-                TextEntry::make('carrera_id')
-                    ->relationship('carrera','carrera')
-                    ->searchable()
-                    ->preload(),
+                TextEntry::make('carrera.carrera'),
+                TextEntry::make('created_at')
+                    ->dateTime()
+                    ->placeholder('-'),
+                TextEntry::make('updated_at')
+                    ->dateTime()
+                    ->placeholder('-'),
             ]);
     }
 
