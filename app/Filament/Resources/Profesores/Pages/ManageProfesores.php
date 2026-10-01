@@ -13,7 +13,8 @@ class ManageProfesores extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            CreateAction::make()
+            ->label('Agregar Profesor'),
         ];
     }
 }
