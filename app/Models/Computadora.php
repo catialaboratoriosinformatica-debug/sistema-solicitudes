@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
 class Computadora extends Model
 {
 	protected $table = 'computadoras';
-	public $timestamps = false;
+	
 
 	protected $casts = [
 		'cantidad' => 'int'
@@ -36,8 +36,8 @@ class Computadora extends Model
 		'cantidad'
 	];
 
-	public function solicitudes()
+	/*public function solicitudes()
 	{
 		return $this->hasMany(Solicitude::class, 'computadoras_id');
-	}
+	}*/
 }

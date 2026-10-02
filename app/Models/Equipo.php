@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
 class Equipo extends Model
 {
 	protected $table = 'equipos';
-	public $timestamps = false;
+	
 
 	protected $casts = [
 		'cantidad' => 'int'
@@ -36,8 +36,8 @@ class Equipo extends Model
 		'cantidad'
 	];
 
-	public function solicitudes()
+	/*public function solicitudes()
 	{
 		return $this->hasMany(Solicitude::class, 'equipos_id');
-	}
+	}*/
 }
