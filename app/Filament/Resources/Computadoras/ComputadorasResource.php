@@ -85,9 +85,17 @@ class ComputadorasResource extends Resource
                 //
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
+                ActionGroup::make([
+                    ViewAction::make()
+                        ->label('Ver')
+                        ->tooltip('Ver Datos del Profesor'),
+                    EditAction::make()
+                        ->label('Editar')
+                        ->tooltip('Editar Datos del Profesor'),
+                    DeleteAction::make()
+                        ->label('Eliminar')
+                        ->tooltip('Eliminar Profesor'),
+                ])
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
