@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Equipos;
 
 use App\Filament\Resources\Equipos\Pages\ManageEquipos;
-use App\Models\Equipos;
+use App\Models\Equipo;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class EquiposResource extends Resource
 {
-    protected static ?string $model = Equipos::class;
+    protected static ?string $model = Equipo::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 

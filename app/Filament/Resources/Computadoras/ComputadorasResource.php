@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Computadoras;
 
 use App\Filament\Resources\Computadoras\Pages\ManageComputadoras;
-use App\Models\Computadoras;
+use App\Models\Computadora;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ComputadorasResource extends Resource
 {
-    protected static ?string $model = Computadoras::class;
+    protected static ?string $model = Computadora::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
