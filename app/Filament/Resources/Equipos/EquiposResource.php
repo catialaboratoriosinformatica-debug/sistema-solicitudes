@@ -24,14 +24,20 @@ use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
+//use Filament\Support\Icons\Heroicon;
 
 class EquiposResource extends Resource
 {
     protected static ?string $model = Equipo::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-video-camera';
 
     protected static ?string $recordTitleAttribute = 'Equipos';
+
+    protected static string | UnitEnum | null $navigationGroup = 'Inventario';
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {
@@ -76,9 +82,17 @@ class EquiposResource extends Resource
                //
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
+                 ActionGroup::make([
+                    ViewAction::make()
+                        ->label('Ver')
+                        ->tooltip('Ver Datos del Equipo'),
+                    EditAction::make()
+                        ->label('Editar')
+                        ->tooltip('Editar Datos del Equipo'),
+                    DeleteAction::make()
+                        ->label('Eliminar')
+                        ->tooltip('Eliminar Equipo'),
+                ])
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
