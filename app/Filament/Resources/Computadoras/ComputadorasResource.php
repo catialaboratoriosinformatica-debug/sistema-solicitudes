@@ -37,9 +37,15 @@ class ComputadorasResource extends Resource
     {
         return $schema
             ->components([
-                TextInput::make('Computadoras')
+               TextInput::make('computadora')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(225),
+                TextInput::make('complemento')
+                    ->maxLength(225)
+                    ->default(null),
+                TextInput::make('cantidad')
+                    ->required()
+                    ->numeric(),
             ]);
     }
 
@@ -47,7 +53,9 @@ class ComputadorasResource extends Resource
     {
         return $schema
             ->components([
-                TextEntry::make('Computadoras'),
+                TextEntry::make('computadoras'),
+                TextEntry::make('complemento'),
+                TextEntry::make('cantidad'),
             ]);
     }
 
@@ -56,8 +64,15 @@ class ComputadorasResource extends Resource
         return $table
             ->recordTitleAttribute('Computadoras')
             ->columns([
-                TextColumn::make('Computadoras')
-                    ->searchable(),
+               TextColumn::make('computadora')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('complemento')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('cantidad')
+                    ->numeric()
+                    ->sortable(),
             ])
             ->filters([
                 //

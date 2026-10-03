@@ -37,9 +37,15 @@ class EquiposResource extends Resource
     {
         return $schema
             ->components([
-                TextInput::make('Equipos')
+                TextInput::make('equipo')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(225),
+                TextInput::make('complemento')
+                    ->maxLength(225)
+                    ->default(null),
+                TextInput::make('cantidad')
+                    ->required()
+                    ->numeric(),
             ]);
     }
 
@@ -47,7 +53,9 @@ class EquiposResource extends Resource
     {
         return $schema
             ->components([
-                TextEntry::make('Equipos'),
+                TextEntry::make('equipos'),
+                TextEntry::make('complemento'),
+                TextEntry::make('cantidad'),
             ]);
     }
 
@@ -56,8 +64,13 @@ class EquiposResource extends Resource
         return $table
             ->recordTitleAttribute('Equipos')
             ->columns([
-                TextColumn::make('Equipos')
+                TextColumn::make('equipo')
                     ->searchable(),
+                TextColumn::make('complemento')
+                    ->searchable(),
+                TextColumn::make('cantidad')
+                    ->numeric()
+                    ->sortable(),
             ])
             ->filters([
                //
