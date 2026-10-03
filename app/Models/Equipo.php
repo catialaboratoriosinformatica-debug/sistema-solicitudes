@@ -36,8 +36,8 @@ class Equipo extends Model
 		'cantidad'
 	];
 
-	/*public function solicitudes()
+	public function solicitudes()
 	{
 		return $this->hasMany(Solicitude::class, 'equipos_id');
-	}*/
+	}
 }

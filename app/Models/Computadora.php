@@ -36,8 +36,8 @@ class Computadora extends Model
 		'cantidad'
 	];
 
-	/*public function solicitudes()
+	public function solicitudes()
 	{
 		return $this->hasMany(Solicitude::class, 'computadoras_id');
-	}*/
+	}
 }

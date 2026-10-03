@@ -60,7 +60,7 @@ class ComputadorasResource extends Resource
     {
         return $schema
             ->components([
-                TextEntry::make('computadoras'),
+                TextEntry::make('computadora'),
                 TextEntry::make('complemento'),
                 TextEntry::make('cantidad'),
             ]);
