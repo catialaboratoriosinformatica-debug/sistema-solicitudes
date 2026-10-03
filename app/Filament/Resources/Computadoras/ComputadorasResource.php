@@ -24,14 +24,21 @@ use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
+use Filament\Actions\ActionGroup;
+//use Filament\Support\Icons\Heroicon;
 
 class ComputadorasResource extends Resource
 {
     protected static ?string $model = Computadora::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-computer-desktop';
 
     protected static ?string $recordTitleAttribute = 'Computadoras';
+
+    protected static string | UnitEnum | null $navigationGroup = 'Inventario';
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

@@ -25,6 +25,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use UnitEnum;
+use Filament\Actions\ActionGroup;
 //use Filament\Support\Icons\Heroicon;
 
 class EquiposResource extends Resource
