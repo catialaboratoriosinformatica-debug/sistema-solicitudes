@@ -129,9 +129,9 @@ class SolicitudFechasTable
                     // 1. Primero mantenemos el orden de prioridad de los estados
                  ->orderByRaw("
                     CASE 
-                        WHEN devoluciones.id IS NOT NULL THEN 3   -- DEVUELTOS (Al final)
-                        WHEN solicitud_fechas.status = 1 THEN 1   -- ENTREGADOS (Primero)
-                        WHEN solicitud_fechas.status = 0 THEN 2   -- SIN ENTREGAR (Segundo)
+                        WHEN devoluciones.id IS NOT NULL THEN 3 
+                        WHEN solicitud_fechas.status IS TRUE THEN 1 
+                        WHEN solicitud_fechas.status IS FALSE THEN 2 
                         ELSE 4 
                     END ASC
                 ")
