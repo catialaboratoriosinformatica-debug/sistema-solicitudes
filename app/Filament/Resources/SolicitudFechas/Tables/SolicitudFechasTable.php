@@ -33,7 +33,7 @@ use App\Models\Equipo;
 use App\Models\Computadora;
 use App\Models\Profesore;
 
-class SolicitudFechasTable
+class SolicitudFechasTable 
 {
     public static function configure(Table $table): Table
     {
@@ -50,6 +50,7 @@ class SolicitudFechasTable
             // --- DATOS DEL EQUIPO (Relación: solicitud -> equipo) ---
             TextColumn::make('solicitude.equipo.equipo') 
                 ->label('Equipo')
+                ->color('info')
                 ->searchable(['solicitude.equipo.equipo', 'solicitude.equipo.complemento'])
                 ->sortable()
                 ->description(fn ($record) => $record->solicitude->equipo?->complemento)
@@ -58,6 +59,7 @@ class SolicitudFechasTable
             // --- DATOS DE LA COMPUTADORA (Relación: solicitud -> computadora) ---
             TextColumn::make('solicitude.computadora.computadora')
                 ->label('Computadora')
+                ->color('warning')
                 ->searchable(['solicitude.computadora.computadora', 'solicitude.computadora.complemento'])
                 ->sortable()
                 ->description(fn ($record) => $record->solicitude->computadora?->complemento)
