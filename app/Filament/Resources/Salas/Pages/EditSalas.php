@@ -2,19 +2,17 @@
 
 namespace App\Filament\Resources\Salas\Pages;
 
-use App\Filament\Resources\Salas\SalaResource;
+use App\Filament\Resources\Salas\SalasResource;
 use Filament\Actions\DeleteAction;
-use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 
-class EditSala extends EditRecord
+class EditSalas extends EditRecord
 {
-    protected static string $resource = SalaResource::class;
+    protected static string $resource = SalasResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            ViewAction::make(),
             DeleteAction::make(),
         ];
     }

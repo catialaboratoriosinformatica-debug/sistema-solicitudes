@@ -2,19 +2,17 @@
 
 namespace App\Filament\Resources\Laboratorios\Pages;
 
-use App\Filament\Resources\Laboratorios\LaboratorioResource;
+use App\Filament\Resources\Laboratorios\LaboratoriosResource;
 use Filament\Actions\DeleteAction;
-use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 
-class EditLaboratorio extends EditRecord
+class EditLaboratorios extends EditRecord
 {
-    protected static string $resource = LaboratorioResource::class;
+    protected static string $resource = LaboratoriosResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            ViewAction::make(),
             DeleteAction::make(),
         ];
     }
