@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\Salas\Pages;
 
-use App\Filament\Resources\Salas\SalasResource;
 use App\Filament\Resources\Laboratorios\LaboratoriosResource;
+use App\Filament\Resources\Salas\SalasResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Actions\Action;
