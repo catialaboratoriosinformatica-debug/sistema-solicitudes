@@ -18,6 +18,10 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use App\Filament\Resources\Solicitudes\Widgets\SolicitudesPorCarreraChart;
+//use App\Filament\Widgets\ToDoAppWidget;
+use App\Filament\Widgets\SolicitudesStatsOverview;
+use App\Filament\Resources\Laboratorios\Widgets\LaboratoriosPorCarreraChart;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -41,6 +45,9 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,
+                SolicitudesPorCarreraChart::class,
+                SolicitudesStatsOverview::class,
+                LaboratoriosPorCarreraChart::class,
             ])
             ->profile()
             ->middleware([
