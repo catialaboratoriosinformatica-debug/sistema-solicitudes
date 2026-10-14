@@ -18,7 +18,6 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitchPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -44,10 +43,6 @@ class AdminPanelProvider extends PanelProvider
                 FilamentInfoWidget::class,
             ])
             ->profile()
-            ->plugin(
-                LanguageSwitchPlugin::make() // <-- 2. Registra el plugin aquí
-                    ->locales(['es', 'en'])
-            )
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
