@@ -52,35 +52,46 @@ class LaboratoriosTable
                 TextColumn::make('disponibilidad')
                     ->label('Estado')
                     ->badge()
-                     ->formatStateUsing(function (string $state, $record): string {
-        
-                        $fechaSolicitud = Carbon::parse($record->fecha)->startOfDay();
-                         $hoy = Carbon::now()->startOfDay();
+                    ->formatStateUsing(function ($state, $record): string {
+                    if (! $record->fecha) {
+                        return 'DESCONOCIDO';
+                    }
 
-                        if ($state === '0' && $hoy->isAfter($fechaSolicitud)) { 
-                            return 'CUMPLIDO'; 
-                        } 
-                        elseif ($state === '0') {
-                            return 'OCUPADO';
-                        } 
-                        elseif ($state === '1') {
-                            return 'DISPONIBLE';
-                        }
-                        return $state;
+                    $fechaSolicitud = Carbon::parse($record->fecha)->startOfDay();
+                    $hoy = Carbon::now()->startOfDay();
+
+                    // Convertir $state a booleano de forma segura
+                    $isDisponible = (bool) $state;
+
+                    if (! $isDisponible && $hoy->isAfter($fechaSolicitud)) {
+                        return 'CUMPLIDO';
+                    }
+
+                    if (! $isDisponible) {
+                        return 'OCUPADO';
+                    }
+
+                        return 'DISPONIBLE';
                     })
-                    ->color(function (string $state, $record): string {
+                    ->color(function ($state, $record): string {
+                    if (! $record->fecha) {
+                        return 'gray';
+                    }
 
-                        $fechaSolicitud = Carbon::parse($record->fecha)->startOfDay();
-                        $hoy = Carbon::now()->startOfDay();
+                    $fechaSolicitud = Carbon::parse($record->fecha)->startOfDay();
+                    $hoy = Carbon::now()->startOfDay();
 
-                        if ($state === '0' && $hoy->isAfter($fechaSolicitud)) {
-                            return 'success'; 
-                        } elseif ($state === '0') {
-                            return 'danger';
-                        }  elseif ($state === '1') {
-                            return 'success';
-                        }
-                        return 'gray'; 
+                    $isDisponible = (bool) $state;
+
+                    if (! $isDisponible && $hoy->isAfter($fechaSolicitud)) {
+                        return 'success';
+                    }
+
+                    if (! $isDisponible) {
+                        return 'danger';
+                    }
+
+                        return 'info'; 
                     }),
                 //TextColumn::make('observacion')
                 //    ->searchable(),
