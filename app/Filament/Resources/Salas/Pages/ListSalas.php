@@ -19,9 +19,9 @@ class ListSalas extends ListRecords
             ->label('Añadir Sala'),
 
             Action::make('regresar_a_laboratorios')
-                ->label('Regresar a Laboratorios')
+                ->label('Volver a Laboratorios')
                 ->url(LaboratoriosResource::getUrl('index'))
-                ->color('gray')
+                ->color('danger')
                 ->icon('heroicon-o-arrow-left'), 
         ];
     }
