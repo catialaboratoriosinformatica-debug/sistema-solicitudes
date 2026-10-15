@@ -22,7 +22,7 @@ class SolicitudesStatsOverview extends BaseWidget
        // Contar el total de solicitudes
         $totalSolicitudes = Solicitude::count();
 
-        $totalSinEntregar = SolicitudFecha::where('status', 'SIN ENTREGAR')->count(); 
+        $totalSinEntregar = SolicitudFecha::where('status', false)->count(); 
         if ($totalSinEntregar > 0) {
             $cacheKey = $this->getCacheKey();
             $lastNotificationTime = Cache::get($cacheKey);
