@@ -44,20 +44,33 @@ class SalasTable
 
                     // 1. DISPONIBLE (true / 1): La sala está libre
                     if ($isDisponible) {
-                        return 'DISPONIBLE';
+                         return 'DISPONIBLE';
                     }
 
-                    // Si la sala está reservada (false / 0), evaluamos la fecha y hora de la solicitud
-                    $fechaStr = Carbon::parse($record->fecha)->format('Y-m-d');
-                    $inicio = Carbon::parse($fechaStr . ' ' . ($record->hora_inicio ?? '00:00:00'));
-                    $ahora = Carbon::now();
+                    if (! $record->fecha) {
+                        return 'OCUPADO';
+                    }
 
-                    // 2. APARTADO (Ficticio): La fecha/hora de la solicitud aún no ha llegado
+                    // Parseamos el día de la solicitud
+                    $fechaSolicitud = Carbon::parse($record->fecha)->startOfDay();
+                    $hoy = Carbon::now()->startOfDay();
+
+                    // Si la solicitud incluye hora de inicio, la combinamos; si no, comparamos por fecha
+                    if (! empty($record->hora_inicio)) {
+                        $inicio = Carbon::parse(Carbon::parse($record->fecha)->format('Y-m-d') . ' ' . $record->hora_inicio);
+                        $ahora = Carbon::now();
+
                     if ($ahora->isBefore($inicio)) {
                         return 'APARTADO';
                     }
+                    } else {
+                        // Comparación estricta por fecha: si hoy es antes de la fecha de la solicitud
+                        if ($hoy->isBefore($fechaSolicitud)) {
+                            return 'APARTADO';
+                        }
+                    }
 
-                    // 3. OCUPADO (false / 0): Ya llegó la fecha y hora asignadas
+                    // 3. OCUPADO (false / 0): Ya es el día y la hora correspondiente
                     return 'OCUPADO';
                 })
                 ->color(function ($state, $record): string {
@@ -67,12 +80,24 @@ class SalasTable
                         return 'success'; // Verde para DISPONIBLE
                     }
 
-                    $fechaStr = Carbon::parse($record->fecha)->format('Y-m-d');
-                    $inicio = Carbon::parse($fechaStr . ' ' . ($record->hora_inicio ?? '00:00:00'));
-                    $ahora = Carbon::now();
+                    if (! $record->fecha) {
+                        return 'danger';
+                    }
+
+                    $fechaSolicitud = Carbon::parse($record->fecha)->startOfDay();
+                    $hoy = Carbon::now()->startOfDay();
+
+                    if (! empty($record->hora_inicio)) {
+                        $inicio = Carbon::parse(Carbon::parse($record->fecha)->format('Y-m-d') . ' ' . $record->hora_inicio);
+                        $ahora = Carbon::now();
 
                     if ($ahora->isBefore($inicio)) {
                         return 'warning'; // Amarillo para APARTADO
+                    }
+                    } else {
+                        if ($hoy->isBefore($fechaSolicitud)) {
+                            return 'warning'; // Amarillo para APARTADO
+                        }
                     }
 
                     return 'danger'; // Rojo para OCUPADO
