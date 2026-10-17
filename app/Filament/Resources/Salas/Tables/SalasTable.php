@@ -42,14 +42,15 @@ class SalasTable
                 ->formatStateUsing(function ($state, $record): string {
                     $isDisponible = (bool) $state;
 
-                    // 1. DISPONIBLE (true / 1): La sala está libre
+                    // Si en la base de datos ya está marcada como libre (true / 1)
                     if ($isDisponible) {
-                    return 'DISPONIBLE';
+                        return 'DISPONIBLE';
                     }
 
                     // Obtener la fecha desde el accessor o relación de la Sala
                     $fecha = $record->proxima_fecha_activa ?? $record->fecha ?? null;
 
+                    // Si está en false/0 pero no hay fecha registrada, se asume OCUPADO
                     if (! $fecha) {
                         return 'OCUPADO';
                     }
@@ -57,20 +58,20 @@ class SalasTable
                     $fechaSolicitud = Carbon::parse($fecha)->startOfDay();
                     $hoy = Carbon::now()->startOfDay();
 
-                    // 2. APARTADO (Ficticio): La fecha de la solicitud aún no ha llegado
+                    // Si la fecha de la solicitud AÚN NO HA LLEGADO, se mantiene DISPONIBLE
                     if ($hoy->isBefore($fechaSolicitud)) {
-                        return 'APARTADO';
+                        return 'DISPONIBLE';
                     }
 
-                    // Si es el mismo día y tiene hora de inicio futura
+                    // Si es el mismo día y la hora de inicio aún es futura, se mantiene DISPONIBLE
                     if ($hoy->isSameDay($fechaSolicitud) && ! empty($record->hora_inicio)) {
                         $inicio = Carbon::parse(Carbon::parse($fecha)->format('Y-m-d') . ' ' . $record->hora_inicio);
                         if (Carbon::now()->isBefore($inicio)) {
-                            return 'APARTADO';
+                            return 'DISPONIBLE';
                         }
                     }
 
-                    // 3. OCUPADO (false / 0): Ya llegó la fecha (o fecha/hora exacta)
+                    // Solo si ya llegó el día y la hora correspondiente pasa a estar OCUPADO
                     return 'OCUPADO';
                 })
                 ->color(function ($state, $record): string {
@@ -89,18 +90,20 @@ class SalasTable
                     $fechaSolicitud = Carbon::parse($fecha)->startOfDay();
                     $hoy = Carbon::now()->startOfDay();
 
+                    // Mientras no llegue la fecha/hora, el badge se muestra Verde (DISPONIBLE)
                     if ($hoy->isBefore($fechaSolicitud)) {
-                        return 'warning'; // Amarillo para APARTADO
+                        return 'success';
                     }
 
                     if ($hoy->isSameDay($fechaSolicitud) && ! empty($record->hora_inicio)) {
                         $inicio = Carbon::parse(Carbon::parse($fecha)->format('Y-m-d') . ' ' . $record->hora_inicio);
                         if (Carbon::now()->isBefore($inicio)) {
-                            return 'warning'; // Amarillo para APARTADO
+                            return 'success';
                         }
                     }
 
-                    return 'danger'; // Rojo para OCUPADO
+                    // Se pinta en Rojo solo cuando entra en el horario ocupado
+                    return 'danger';
                 }),
             TextColumn::make('proxima_fecha_activa') // Usa el accessor del modelo Sala
                 ->label('Fecha')
