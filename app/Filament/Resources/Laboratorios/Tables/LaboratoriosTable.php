@@ -53,46 +53,49 @@ class LaboratoriosTable
                     ->label('Estado')
                     ->badge()
                     ->formatStateUsing(function ($state, $record): string {
-                    if (! $record->fecha) {
-                        return 'DESCONOCIDO';
-                    }
+                        if (! $record->fecha) {
+                            return 'DESCONOCIDO';
+                        }
 
-                    $fechaSolicitud = Carbon::parse($record->fecha)->startOfDay();
-                    $hoy = Carbon::now()->startOfDay();
+        $fechaStr = Carbon::parse($record->fecha)->format('Y-m-d');
+        $inicio = Carbon::parse($fechaStr . ' ' . ($record->hora_inicio ?? '00:00:00'));
+        $ahora = Carbon::now();
 
-                    // Convertir $state a booleano de forma segura
-                    $isDisponible = (bool) $state;
+        // 1. DATO FICTICIO: Si la solicitud todavía no llega a su fecha/hora de inicio
+        if ($ahora->isBefore($inicio)) {
+            return 'APARTADO';
+        }
 
-                    if (! $isDisponible && $hoy->isAfter($fechaSolicitud)) {
-                        return 'CUMPLIDO';
-                    }
+        // 2. DATO BOOLEANO (0 / false): Ya llegó la fecha/hora y está transcurriendo
+        if (! (bool) $state) {
+            return 'OCUPADO';
+        }
 
-                    if (! $isDisponible) {
-                        return 'OCUPADO';
-                    }
+        // 3. DATO BOOLEANO (1 / true): Ya concluyó o la sala quedó liberada
+        return 'CUMPLIDO';
+    })
+    ->color(function ($state, $record): string {
+        if (! $record->fecha) {
+            return 'gray';
+        }
 
-                        return 'DISPONIBLE';
-                    })
-                    ->color(function ($state, $record): string {
-                    if (! $record->fecha) {
-                        return 'gray';
-                    }
+        $fechaStr = Carbon::parse($record->fecha)->format('Y-m-d');
+        $inicio = Carbon::parse($fechaStr . ' ' . ($record->hora_inicio ?? '00:00:00'));
+        $ahora = Carbon::now();
 
-                    $fechaSolicitud = Carbon::parse($record->fecha)->startOfDay();
-                    $hoy = Carbon::now()->startOfDay();
+        // Color amarillo para APARTADO (Futuro)
+        if ($ahora->isBefore($inicio)) {
+            return 'warning';
+        }
 
-                    $isDisponible = (bool) $state;
+        // Color rojo para OCUPADO (0 / false)
+        if (! (bool) $state) {
+            return 'danger';
+        }
 
-                    if (! $isDisponible && $hoy->isAfter($fechaSolicitud)) {
-                        return 'success';
-                    }
-
-                    if (! $isDisponible) {
-                        return 'danger';
-                    }
-
-                        return 'info'; 
-                    }),
+        // Color verde/éxito para CUMPLIDO (1 / true)
+        return 'success';
+    }),
                 //TextColumn::make('observacion')
                 //    ->searchable(),
             ])
