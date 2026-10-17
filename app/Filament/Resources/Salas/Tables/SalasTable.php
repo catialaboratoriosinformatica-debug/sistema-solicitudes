@@ -39,15 +39,43 @@ class SalasTable
                 ->searchable(),
             TextColumn::make('disponibilidad')
                 ->label('Estado')
-                ->formatStateUsing(fn (string $state): string => match ($state) {
-                    '1' => 'DISPONIBLE',
-                    '0' => 'OCUPADO',
-                    default => $state,
+                ->formatStateUsing(function ($state, $record): string {
+                    $isDisponible = (bool) $state;
+
+                    // 1. DISPONIBLE (true / 1): La sala está libre
+                    if ($isDisponible) {
+                        return 'DISPONIBLE';
+                    }
+
+                    // Si la sala está reservada (false / 0), evaluamos la fecha y hora de la solicitud
+                    $fechaStr = Carbon::parse($record->fecha)->format('Y-m-d');
+                    $inicio = Carbon::parse($fechaStr . ' ' . ($record->hora_inicio ?? '00:00:00'));
+                    $ahora = Carbon::now();
+
+                    // 2. APARTADO (Ficticio): La fecha/hora de la solicitud aún no ha llegado
+                    if ($ahora->isBefore($inicio)) {
+                        return 'APARTADO';
+                    }
+
+                    // 3. OCUPADO (false / 0): Ya llegó la fecha y hora asignadas
+                    return 'OCUPADO';
                 })
-                ->color(fn (string $state): string => match ($state) {
-                    '1' => 'success',
-                    '0' => 'danger',
-                    default => 'gray',
+                ->color(function ($state, $record): string {
+                    $isDisponible = (bool) $state;
+
+                    if ($isDisponible) {
+                        return 'success'; // Verde para DISPONIBLE
+                    }
+
+                    $fechaStr = Carbon::parse($record->fecha)->format('Y-m-d');
+                    $inicio = Carbon::parse($fechaStr . ' ' . ($record->hora_inicio ?? '00:00:00'));
+                    $ahora = Carbon::now();
+
+                    if ($ahora->isBefore($inicio)) {
+                        return 'warning'; // Amarillo para APARTADO
+                    }
+
+                    return 'danger'; // Rojo para OCUPADO
                 }),
             TextColumn::make('proxima_fecha_activa') // Usa el accessor del modelo Sala
                 ->label('Fecha')
