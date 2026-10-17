@@ -46,8 +46,9 @@ class AdminPanelProvider extends PanelProvider
                 //AccountWidget::class,
                 //FilamentInfoWidget::class,
                 SolicitudesPorCarreraChart::class,
-                SolicitudesStatsOverview::class,
                 LaboratoriosPorCarreraChart::class,
+                SolicitudesStatsOverview::class,
+                
             ])
             ->profile()
             ->middleware([
