@@ -104,7 +104,24 @@ class SalasTable
                 }),
             TextColumn::make('proxima_fecha_activa') // Usa el accessor del modelo Sala
                 ->label('Fecha')
-                ->date('M. d, Y'),
+                ->date('M. d, Y')
+                ->tooltip(function ($record): ?string {
+                    // Obtenemos todas las fechas futuras/activas de la sala desde su relación de solicitudes
+                    // Asumiendo que el modelo Sala tiene la relación 'laboratorios' o 'solicitudes'
+                    $fechas = $record->laboratorios()
+                    ->pluck('fecha')
+                    ->filter()
+                    ->map(fn ($fecha) => \Carbon\Carbon::parse($fecha)->format('d/m/Y'))
+                    ->unique()
+                    ->values();
+
+                    if ($fechas->isEmpty()) {
+                        return null; // Si no hay más fechas, no muestra tooltip
+                    }
+
+                    // Si hay fechas, las une separadas por saltos de línea o comas
+                    return "Fechas reservadas:\n" . $fechas->implode("\n");
+                }),
         ])
         ->filters([
             SelectFilter::make('disponibilidad')
