@@ -25,7 +25,6 @@ use Carbon\Carbon;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\HtmlString;
 
 class SalasTable
 {
@@ -121,9 +120,7 @@ class SalasTable
                     }
 
                     // Si hay fechas, las une separadas por saltos de línea o comas
-                    $html = '<strong>Fechas reservadas:</strong><br>' . $fechas->implode('<br>');
-
-                    return new HtmlString($html);
+                    return "Fechas reservadas:\n" . $fechas->implode("\n• ");
                 }),
         ])
         ->filters([
