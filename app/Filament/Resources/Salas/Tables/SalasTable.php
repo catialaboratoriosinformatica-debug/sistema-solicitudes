@@ -120,7 +120,7 @@ class SalasTable
                     }
 
                     // Si hay fechas, las une separadas por saltos de línea o comas
-                    return "Fechas reservadas:\n" . $fechas->implode("\n");
+                    return "Fechas reservadas:\n" . $fechas->implode("\n• ");
                 }),
         ])
         ->filters([
