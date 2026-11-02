@@ -25,6 +25,48 @@ class LaboratoriosTable
 
     public static function configure(Table $table): Table
     {
+        $validarSolapamiento = function (callable $get) {
+            return function (string $attribute, $value, Closure $fail) use ($get) {
+                $salaId = $get('sala_id');
+                $fecha = $get('fecha');
+                $horaInicio = $get('hora_inicio');
+                $horaFinal = $get('hora_final');
+
+                // Si aún no se han llenado todos los campos, no valida todavía
+                if (! $salaId || ! $fecha || ! $horaInicio || ! $horaFinal) {
+                    return;
+                }
+
+                $inicio = Carbon::parse($horaInicio);
+                $fin = Carbon::parse($horaFinal);
+
+                // Validar que la hora de inicio no sea mayor o igual a la hora final
+                if ($fin->lessThanOrEqualTo($inicio)) {
+                    $fail('La hora de culminación debe ser posterior a la hora de inicio.');
+                    return;
+                }
+
+                // Consultar en la BD si existe una solicitud para esa sala en ese horario
+                $existeSolapamiento = Laboratorio::where('sala_id', $salaId)
+                    ->where('fecha', $fecha)
+                    ->where(function ($query) use ($horaInicio, $horaFinal) {
+                        $query->whereBetween('hora_inicio', [$horaInicio, $horaFinal])
+                            ->orWhereBetween('hora_final', [$horaInicio, $horaFinal])
+                            ->orWhere(function ($q) use ($horaInicio, $horaFinal) {
+                                $q->where('hora_inicio', '<=', $horaInicio)
+                                  ->where('hora_final', '>=', $horaFinal);
+                            });
+                    })
+                    // Si estamos editando un registro, ignoramos su propio ID
+                    ->when($get('id'), fn ($q, $id) => $q->where('id', '!=', $id))
+                    ->exists();
+
+                if ($existeSolapamiento) {
+                    $fail('La sala ya se encuentra reservada en este rango de fecha u hora.');
+                }
+            };
+        };
+        
         return $table
             ->columns([
                 TextColumn::make('profesore.nombre') 
