@@ -27,5 +27,13 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('30260145')
         ]);
 
+        $this->call([
+            CarreraSeeder::class,
+            SalaSeeder::class, // Tus otros seeders si los tienes
+            EquipoSeeder::class,
+            ComputadoraSeeder::class,
+        ]);
+
+       
     }
 }
